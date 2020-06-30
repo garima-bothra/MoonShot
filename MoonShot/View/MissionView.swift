@@ -9,14 +9,8 @@
 import SwiftUI
 
 struct MissionView: View {
+
     let mission: Mission
-    
-    struct CrewMember {
-        let role: String
-        let astronaut: Astronaut
-    }
-    
-    let astronauts: [CrewMember]
     
     var body: some View {
         GeometryReader { geometry in
@@ -32,7 +26,7 @@ struct MissionView: View {
                     Text(self.mission.description)
                         .padding()
                     HStack {
-                        ForEach(self.astronauts, id: \.role) { crewMember in
+                        ForEach(self.mission.crewMembers, id: \.role) { crewMember in
                             NavigationLink(destination: AstronautView(astronaut: crewMember.astronaut)) {
                                 VStack {
                                     Image(crewMember.astronaut.id)
@@ -61,20 +55,8 @@ struct MissionView: View {
         .navigationBarTitle(Text(mission.displayName), displayMode: .inline)
     }
     
-    init(mission: Mission, astronauts: [Astronaut]) {
+    init(mission: Mission) {
         self.mission = mission
-        
-        var matches = [CrewMember]()
-        
-        for member in mission.crew {
-            if let match = astronauts.first(where: { $0.id == member.name }) {
-                matches.append(CrewMember(role: member.role, astronaut: match))
-            } else {
-                fatalError("Missing \(member)")
-            }
-        }
-        
-        self.astronauts = matches
     }
 }
 
@@ -83,6 +65,6 @@ struct MissionView_Previews: PreviewProvider {
     static let astronauts: [Astronaut] = Bundle.main.decode("astronauts.json")
     
     static var previews: some View {
-        MissionView(mission: missions[0], astronauts: astronauts)
+        MissionView(mission: missions[0])
     }
 }

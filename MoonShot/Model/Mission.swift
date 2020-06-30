@@ -13,7 +13,12 @@ struct Mission: Codable, Identifiable {
         let name: String
         let role: String
     }
-    
+
+    struct CrewMember {
+        let role: String
+        let astronaut: Astronaut
+    }
+
     let id: Int
     let launchDate: Date?
     let crew: [CrewRole]
@@ -25,6 +30,21 @@ struct Mission: Codable, Identifiable {
     var image: String {
         "apollo\(id)"
     }
+
+    var crewMembers: [CrewMember] {
+
+        var matches = [CrewMember]()
+        let astronauts: [Astronaut] = Bundle.main.decode("astronauts.json")
+
+        for member in crew {
+                if let match = astronauts.first(where: { $0.id == member.name }) {
+                    matches.append(CrewMember(role: member.role, astronaut: match))
+                } else {
+                    fatalError("Missing \(member)")
+                }
+            }
+            return matches
+        }
     
     var formattedLaunchDate: String {
         if let launchDate = launchDate {
