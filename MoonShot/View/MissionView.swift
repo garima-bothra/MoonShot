@@ -30,8 +30,27 @@ struct MissionView: View {
 
                     Text(self.mission.description)
                         .padding()
+                    HStack {
+                    ForEach(self.astronauts, id: \.role) { crewMember in
+                        VStack {
+                            Image(crewMember.astronaut.id)
+                                .resizable()
+                                .frame(width: 83, height: 60)
+                                .clipShape(Capsule())
+                                .overlay(Capsule().stroke(Color.primary, lineWidth: 1))
 
-                    Spacer(minLength: 25)
+                            VStack(alignment: .leading) {
+                                Text(crewMember.astronaut.name)
+                                    .font(.headline)
+                                Text(crewMember.role)
+                                    .foregroundColor(.secondary)
+                            }
+
+                            Spacer()
+                        }
+                        .padding(.horizontal)
+                    }
+                    }
                 }
             }
         }
