@@ -9,10 +9,10 @@
 import SwiftUI
 
 struct ContentView: View {
-
+    
     let astronauts: [Astronaut] = Bundle.main.decode("astronauts.json")
     let missions: [Mission] = Bundle.main.decode("missions.json")
-
+    
     var body: some View {
         NavigationView {
             List(missions) { mission in
@@ -21,7 +21,7 @@ struct ContentView: View {
                         .resizable()
                         .scaledToFit()
                         .frame(width: 44, height: 44)
-
+                    
                     VStack(alignment: .leading) {
                         Text(mission.displayName)
                             .font(.headline)
